@@ -13,6 +13,7 @@
 
 #include "Targets.h"
 
+#include "Targets/URCL.h"
 #include "Targets/AArch64.h"
 #include "Targets/AMDGPU.h"
 #include "Targets/ARC.h"
@@ -427,7 +428,8 @@ TargetInfo *AllocateTarget(const llvm::Triple &Triple,
     default:
       return new RISCV64TargetInfo(Triple, Opts);
     }
-
+  case llvm::Triple::urcl:
+    return new URCLTargetInfo(Triple, Opts);
   case llvm::Triple::sparc:
     switch (os) {
     case llvm::Triple::Linux:

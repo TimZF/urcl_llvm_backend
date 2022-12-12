@@ -427,6 +427,7 @@ set(LLVM_ALL_TARGETS
   WebAssembly
   X86
   XCore
+  URCL
   )
 
 # List of targets with JIT support:

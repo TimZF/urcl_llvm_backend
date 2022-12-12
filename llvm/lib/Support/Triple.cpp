@@ -83,6 +83,7 @@ StringRef Triple::getArchTypeName(ArchType Kind) {
   case x86:            return "i386";
   case x86_64:         return "x86_64";
   case xcore:          return "xcore";
+  case urcl:          return "urcl";
   }
 
   llvm_unreachable("Invalid ArchType!");
@@ -172,6 +173,7 @@ StringRef Triple::getArchTypePrefix(ArchType Kind) {
   case loongarch64: return "loongarch";
 
   case dxil:        return "dx";
+  case urcl:        return "urcl";
   }
 }
 
@@ -349,6 +351,7 @@ Triple::ArchType Triple::getArchTypeForLLVMName(StringRef Name) {
     .Case("x86", x86)
     .Case("i386", x86)
     .Case("x86-64", x86_64)
+    .Case("urcl", urcl)
     .Case("xcore", xcore)
     .Case("nvptx", nvptx)
     .Case("nvptx64", nvptx64)
@@ -469,6 +472,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("avr", Triple::avr)
     .Case("m68k", Triple::m68k)
     .Case("msp430", Triple::msp430)
+    .Case("urcl", Triple::urcl)
     .Cases("mips", "mipseb", "mipsallegrex", "mipsisa32r6",
            "mipsr6", Triple::mips)
     .Cases("mipsel", "mipsallegrexel", "mipsisa32r6el", "mipsr6el",
@@ -848,6 +852,7 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::tcele:
   case Triple::thumbeb:
   case Triple::ve:
+  case Triple::urcl:
   case Triple::xcore:
     return Triple::ELF;
 
@@ -1429,6 +1434,7 @@ static unsigned getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::wasm32:
   case llvm::Triple::x86:
   case llvm::Triple::xcore:
+  case llvm::Triple::urcl:
     return 32;
 
   case llvm::Triple::aarch64:
@@ -1519,6 +1525,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::wasm32:
   case Triple::x86:
   case Triple::xcore:
+  case Triple::urcl:
     // Already 32-bit.
     break;
 
@@ -1568,6 +1575,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::sparcel:
   case Triple::tce:
   case Triple::tcele:
+  case Triple::urcl:
   case Triple::xcore:
     T.setArch(UnknownArch);
     break;

@@ -758,6 +758,7 @@ void LiveVariables::replaceKillInstruction(Register Reg, MachineInstr &OldMI,
 /// removeVirtualRegistersKilled - Remove all killed info for the specified
 /// instruction.
 void LiveVariables::removeVirtualRegistersKilled(MachineInstr &MI) {
+  //DEBUG_WITH_TYPE("LiveVariables", dbgs() << "RemoveVirtualRegsitersKilled"; MI.dump(); dbgs() << "\n");
   for (MachineOperand &MO : MI.operands()) {
     if (MO.isReg() && MO.isKill()) {
       MO.setIsKill(false);

@@ -1129,6 +1129,7 @@ inline SDValue::SDValue(SDNode *node, unsigned resno)
   // Explicitly check for !ResNo to avoid use-after-free, because there are
   // callers that use SDValue(N, 0) with a deleted N to indicate successful
   // combines.
+  //DEBUG_WITH_TYPE("SelectionDagNodes", dbgs() << "SDValue Constructor"; this->dump();dbgs() << "\n");
   assert((!Node || !ResNo || ResNo < Node->getNumValues()) &&
          "Invalid result number for the given node!");
   assert(ResNo < -2U && "Cannot use result numbers reserved for DenseMaps.");
