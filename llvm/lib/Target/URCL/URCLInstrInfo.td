@@ -36,7 +36,7 @@ def ADJCALLSTACKUP : PseudoInst<(outs), (ins i32imm:$amt1, i32imm:$amt2),
 }
 
 
-def ADDRrr : ComplexPattern<iPTR, 2, "SelectADDRrr", [frameindex], []>;
+def ADDRrr : ComplexPattern<iPTR, 2, "SelectADDRrr", [], []>;
 def ADDRri : ComplexPattern<iPTR, 2, "SelectADDRri", [frameindex], []>;
 def memRI : Operand<iPTR> {
   let MIOperandInfo = (ops GPR:$a1, i32imm:$a2);

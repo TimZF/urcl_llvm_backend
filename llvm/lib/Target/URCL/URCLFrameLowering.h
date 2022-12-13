@@ -14,7 +14,7 @@
 #ifndef LLVM_LIB_TARGET_URCL_URCLFRAMELOWERING_H
 #define LLVM_LIB_TARGET_URCL_URCLFRAMELOWERING_H
 
-#include "llvm/CodeGen/TargetFrameLowering.h"emitPrologue
+#include "llvm/CodeGen/TargetFrameLowering.h"
 
 namespace llvm {
   class URCLSubtarget;
