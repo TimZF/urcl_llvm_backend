@@ -69,7 +69,7 @@ public:
     OutStreamer->emitRawText("MINHEAP 128\n");
     OutStreamer->emitRawText("MINSTACK 128\n");
     OutStreamer->emitRawText("MOV R1, SP\n");
-    OutStreamer->emitRawText("CALL .main\n");
+    OutStreamer->emitRawText("CAL .main\n");
     OutStreamer->emitRawText("HLT\n");
   };
 };

@@ -70,8 +70,8 @@ void URCLInstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
   if (RC == &URCL::GPRRegClass){
     //BuildMI(MBB, I, DL, get(URCL::StoreRI)).addFrameIndex(FI).addImm(0)
     //  .addReg(SrcReg, getKillRegState(isKill)).addMemOperand(MMO);
-    BuildMI(MBB, I, DL, get(URCL::StoreRI)).addReg(SrcReg, getKillRegState(isKill))
-                                            .addFrameIndex(FI).addImm(0)
+    BuildMI(MBB, I, DL, get(URCL::StoreRI))
+                                            .addFrameIndex(FI).addImm(0).addReg(SrcReg, getKillRegState(isKill))
                                             .addMemOperand(MMO);
   }
   else{
