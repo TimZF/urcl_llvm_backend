@@ -67,10 +67,11 @@ void URCLInstPrinter::printOperand(const MCInst *MI, int opNum,
 }
 
 
-void URCLInstPrinter::printAddrMode(const MCInst *MI, uint64_t OpNum, raw_ostream &O){
-  printOperand(MI, OpNum, O);
+void URCLInstPrinter::printMemOperand(const MCInst *MI, int opNum,
+                                       raw_ostream &O, const char *Modifier) {
+  printOperand(MI, opNum, O);
   O << ", ";
-  printOperand(MI, OpNum+1, O);
+  printOperand(MI, opNum + 1, O);
 }
 
 

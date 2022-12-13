@@ -35,10 +35,10 @@ URCLSubtarget::URCLSubtarget(const Triple &TT, StringRef CPU,
                                const TargetMachine &TM)
     : URCLGenSubtargetInfo(TT, CPU, CPU, FS),
       TargetTriple(TT),
-      TSInfo(),
       InstrInfo(initializeSubtargetDependencies(TT, CPU, CPU, TM)),
-      FrameLowering(*this),
-      TLInfo(TM, *this)
+      TLInfo(TM, *this),
+      TSInfo(),
+      FrameLowering(*this)
       { }
 
 

@@ -40,11 +40,11 @@ def ADDRrr : ComplexPattern<iPTR, 2, "SelectADDRrr", [], []>;
 def ADDRri : ComplexPattern<iPTR, 2, "SelectADDRri", [frameindex], []>;
 def memRI : Operand<iPTR> {
   let MIOperandInfo = (ops GPR:$a1, i32imm:$a2);
-  let PrintMethod = "printAddrMode";
+  let PrintMethod = "printMemOperand";
 }
 def memRR : Operand<iPTR> {
   let MIOperandInfo = (ops GPR:$a1, GPR:$a2);
-  let PrintMethod = "printAddrMode";
+  let PrintMethod = "printMemOperand";
 }
 
 
@@ -70,6 +70,7 @@ let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in{
       def IMMr  : Instr2<0b000000, (outs GPR:$a1), (ins i32imm:$a2),
                           "IMM $a1, $a2", [(set i32:$a1, imm:$a2)]>;
     }
+
     defm ADD   : TernaryOp<"ADD", add>;
     defm SUB   : TernaryOp<"SUB", sub>;
     defm MUL   : TernaryOp<"MUL", mul>;
@@ -79,6 +80,9 @@ let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in{
     defm SRA   : TernaryOp<"BSS", sra>;
     defm SHL   : TernaryOp<"BSL", shl>;
 }
+
+//def IMMri  : Instr3<0b000000, (outs GPR:$a1), (ins (memRI $a2, $a3):$addr),
+//                          "ADD $a1, $addr", [(set i32:$a1, ADDRri:$addr)]>;
 
 let isMoveReg = 1 in{
     def MOVrr  : Instr2<0b000000, (outs GPR:$a1), (ins GPR:$a2),

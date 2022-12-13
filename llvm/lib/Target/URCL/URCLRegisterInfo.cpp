@@ -83,7 +83,7 @@ bool URCLRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
   DebugLoc dl = MI.getDebugLoc();
   int FrameIndex = MI.getOperand(FIOperandNum).getIndex();
   MachineFunction &MF = *MI.getParent()->getParent();
-  const URCLSubtarget &Subtarget = MF.getSubtarget<URCLSubtarget>();
+  //const URCLSubtarget &Subtarget = MF.getSubtarget<URCLSubtarget>();
   const URCLFrameLowering *TFI = getFrameLowering(MF);
 
   Register FrameReg;

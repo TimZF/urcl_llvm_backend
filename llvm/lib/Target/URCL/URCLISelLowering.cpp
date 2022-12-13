@@ -250,8 +250,8 @@ SDValue URCLTargetLowering::LowerGlobalAddress(SDValue addr, SelectionDAG& DAG) 
   SDLoc DL(addr);
   EVT VT = getPointerTy(DAG.getDataLayout());
 
-  const Module *M = DAG.getMachineFunction().getFunction().getParent();
-  PICLevel::Level picLevel = M->getPICLevel();
+  //const Module *M = DAG.getMachineFunction().getFunction().getParent();
+  //PICLevel::Level picLevel = M->getPICLevel();
 
   const GlobalAddressSDNode *GA = dyn_cast<GlobalAddressSDNode>(addr);
   SDValue idx = DAG.getTargetGlobalAddress(GA->getGlobal(),
@@ -261,7 +261,7 @@ SDValue URCLTargetLowering::LowerGlobalAddress(SDValue addr, SelectionDAG& DAG) 
   SDValue GlobalBase = DAG.getRegister(URCL::R0, VT);//DAG.getNode(SPISD::GLOBAL_BASE_REG, DL, VT);
   SDValue AbsAddr = DAG.getNode(ISD::ADD, DL, VT, GlobalBase, idx);
 
-  MachineFrameInfo &MFI = DAG.getMachineFunction().getFrameInfo();
+  //MachineFrameInfo &MFI = DAG.getMachineFunction().getFrameInfo();
   return DAG.getLoad(VT, DL, DAG.getEntryNode(), AbsAddr,
                      MachinePointerInfo::getGOT(DAG.getMachineFunction()));
 }
@@ -563,7 +563,7 @@ SDValue URCLTargetLowering::LowerFormalArguments(SDValue Chain, CallingConv::ID 
                          SmallVectorImpl<SDValue> &InVals) const {
   MachineFunction &MF = DAG.getMachineFunction();
   MachineRegisterInfo &RegInfo = MF.getRegInfo();
-  URCLFunctionInfo *FuncInfo = MF.getInfo<URCLFunctionInfo>();
+  //URCLFunctionInfo *FuncInfo = MF.getInfo<URCLFunctionInfo>();
 
   // Assign locations to all of the incoming arguments.
   SmallVector<CCValAssign, 16> ArgLocs;
@@ -572,7 +572,6 @@ SDValue URCLTargetLowering::LowerFormalArguments(SDValue Chain, CallingConv::ID 
   CCInfo.AnalyzeFormalArguments(Ins, CC_URCL);
 
   const unsigned StackOffset = 92;
-  bool IsLittleEndian = DAG.getDataLayout().isLittleEndian();
 
   unsigned InIdx = 0;
   for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i, ++InIdx) {

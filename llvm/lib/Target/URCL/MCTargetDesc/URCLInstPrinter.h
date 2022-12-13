@@ -40,14 +40,12 @@ public:
                     raw_ostream &OS);
   void printMemOperand(const MCInst *MI, int opNum,
                        raw_ostream &OS, const char *Modifier = nullptr);
-  //void printAddrModeMemSrc(const MCInst *MI, unsigned OpNum, raw_ostream &O);
+
   void printCCOperand(const MCInst *MI, int opNum, raw_ostream &O);
   bool printGetPCX(const MCInst *MI, unsigned OpNo,
                    raw_ostream &OS);
   void printMembarTag(const MCInst *MI, int opNum,
                       raw_ostream &O);
-
-  void printAddrMode(const MCInst *MI, uint64_t Address, raw_ostream &O);
 
 };
 } // end namespace llvm
