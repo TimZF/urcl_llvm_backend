@@ -70,9 +70,8 @@ void URCLInstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
   if (RC == &URCL::GPRRegClass){
     //BuildMI(MBB, I, DL, get(URCL::StoreRI)).addFrameIndex(FI).addImm(0)
     //  .addReg(SrcReg, getKillRegState(isKill)).addMemOperand(MMO);
-    BuildMI(MBB, I, DL, get(URCL::StoreRI))
-                                            .addFrameIndex(FI).addImm(0).addReg(SrcReg, getKillRegState(isKill))
-                                            .addMemOperand(MMO);
+    BuildMI(MBB, I, DL, get(URCL::StoreRI)).addFrameIndex(FI).addImm(0)
+                                            .addMemOperand(MMO).addReg(SrcReg, getKillRegState(isKill));
   }
   else{
     llvm_unreachable("Can't store this register to stack slot");

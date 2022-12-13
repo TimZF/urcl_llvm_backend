@@ -13,8 +13,8 @@ struct Vec2{
 int main(void)
 {
     Vec2 a{1,2};
-    Vec2 b{2,3};
+    //Vec2 b{2,3};
 
-    Vec2 c = a+b;
-    return c.x+c.y;
+    //Vec2 c = a+b;
+    return a.x;
 }

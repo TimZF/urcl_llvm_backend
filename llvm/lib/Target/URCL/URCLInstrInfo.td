@@ -81,8 +81,9 @@ let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in{
     defm SHL   : TernaryOp<"BSL", shl>;
 }
 
-//def IMMri  : Instr3<0b000000, (outs GPR:$a1), (ins (memRI $a2, $a3):$addr),
-//                          "ADD $a1, $addr", [(set i32:$a1, ADDRri:$addr)]>;
+let isCodeGenOnly = 1 in
+def IMMri  : Instr3<0b000000, (outs GPR:$a1), (ins (memRI $a2, $a3):$addr),
+                          "ADD $a1, $addr", [(set iPTR:$a1, ADDRri:$addr)]>;
 
 let isMoveReg = 1 in{
     def MOVrr  : Instr2<0b000000, (outs GPR:$a1), (ins GPR:$a2),
@@ -93,7 +94,7 @@ let isMoveReg = 1 in{
 
 multiclass Store<SDPatternOperator OpNode> {
   def RR  : Instr3<0b000000,
-                 (outs), (ins  (memRR $a2, $a3):$addr, GPR:$a1),
+                 (outs), (ins (memRR $a2, $a3):$addr, GPR:$a1),
                  "LSTR $addr, $a1",
                  [(OpNode i32:$a1, ADDRrr:$addr)]
                  >;
@@ -177,14 +178,13 @@ def SDT_urclCall    : SDTypeProfile<0, -1, [SDTCisPtrTy<0>]>;
 def urcl_call
     : SDNode<"URCLISD::CALL", SDT_urclCall,
              [ SDNPHasChain, SDNPOptInGlue, SDNPOutGlue, SDNPVariadic ]>;
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0, Defs = [R1], Uses = [R1] in {
-    let isCall = 1 in
-        def CALL : Instr1<0b000000, (outs), (ins GPR:$a1), "CAL $a1", [(urcl_call i32:$a1)]>;
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0, Defs = [R1], Uses = [R1], isCall = 1 in {
+    def CALL : Instr1<0b000000, (outs), (ins GPR:$a1), "CAL $a1", [(urcl_call i32:$a1)]>;
 }
 
 
 def URCLRetFlag    : SDNode<"URCLISD::RET_FLAG", SDTNone,
                            [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
 let isTerminator = 1, isReturn = 1, isBarrier = 1, Defs = [R1], Uses = [R1]  in {
-  def RET : Instr0<0b000000, (outs), (ins variable_ops),  "RET",  [(URCLRetFlag)]>;
+  def RET : Instr0<0b000000, (outs), (ins),  "RET",  [(URCLRetFlag)]>;
 }
