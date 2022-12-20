@@ -1,20 +1,13 @@
 
+int myFunc(int a, int b){
+    return a+b;
+}
 
-struct Vec2{
-    int x;
-    int y;
-
-    Vec2 operator+(const Vec2& rhs){
-        return Vec2{this->x+rhs.x, this->y+rhs.y};
-    }
-};
 
 
 int main(void)
 {
-    Vec2 a{1,2};
-    //Vec2 b{2,3};
+    int a[2] = {32, 64};
+    return myFunc(a[0], a[1]);
 
-    //Vec2 c = a+b;
-    return a.x;
 }

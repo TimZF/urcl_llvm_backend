@@ -57,7 +57,7 @@ bool URCLDAGToDAGISel::SelectADDRri(SDValue Addr,
     return true;
   }
   if (Addr.getOpcode() == ISD::TargetExternalSymbol ||
-      Addr.getOpcode() == ISD::TargetGlobalAddress ||
+      //Addr.getOpcode() == ISD::TargetGlobalAddress ||
       Addr.getOpcode() == ISD::TargetGlobalTLSAddress)
     return false;  // direct calls.
 

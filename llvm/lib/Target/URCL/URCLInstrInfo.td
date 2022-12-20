@@ -59,16 +59,16 @@ multiclass TernaryOp<string OpcStr, SDPatternOperator OpNode> {
                  !strconcat(OpcStr, " $a1, $a2, $a3"),
                  [(set i32:$a1, (OpNode i32:$a2, imm:$a3))]
                  >;
-  def II  : Instr3<0b000000,
-                 (outs GPR:$a1), (ins i32imm:$a2, i32imm:$a3),
-                 !strconcat(OpcStr, " $a1, $a2, $a3"),
-                 [(set i32:$a1, (OpNode imm:$a2, imm:$a3))]
-                 >;
+  //dont think this is needed
+  //def II  : Instr3<0b000000,
+  //               (outs GPR:$a1), (ins i32imm:$a2, i32imm:$a3),
+  //               !strconcat(OpcStr, " $a1, $a2, $a3"),
+  //               [(set i32:$a1, (OpNode imm:$a2, imm:$a3))]
+  //               >;
 }
 let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in{
     let isMoveImm = 1 in{
-      def IMMr  : Instr2<0b000000, (outs GPR:$a1), (ins i32imm:$a2),
-                          "IMM $a1, $a2", [(set i32:$a1, imm:$a2)]>;
+      def IMMr  : Instr2<0b000000, (outs GPR:$a1), (ins i32imm:$a2), "IMM $a1, $a2", [(set i32:$a1, imm:$a2)]>;
     }
 
     defm ADD   : TernaryOp<"ADD", add>;
@@ -81,14 +81,18 @@ let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in{
     defm SHL   : TernaryOp<"BSL", shl>;
 }
 
-let isCodeGenOnly = 1 in
-def IMMri  : Instr3<0b000000, (outs GPR:$a1), (ins (memRI $a2, $a3):$addr),
-                          "ADD $a1, $addr", [(set iPTR:$a1, ADDRri:$addr)]>;
 
 let isMoveReg = 1 in{
-    def MOVrr  : Instr2<0b000000, (outs GPR:$a1), (ins GPR:$a2),
-                              "MOV $a1, $a2", []>;
+    def MOVrr  : Instr2<0b000000, (outs GPR:$a1), (ins GPR:$a2), "MOV $a1, $a2", []>;
 }
+
+def : Instr3<0b000000,
+        (outs GPR:$a1), (ins (memRI $a2, $a3):$addr),
+        "add $a1, $addr",
+        [(set i32:$a1, ADDRri:$addr)]
+        >;
+
+
 
 
 
@@ -115,6 +119,11 @@ multiclass Load<SDPatternOperator OpNode> {
                  "LLOD $a1, $addr",
                  [(set i32:$a1, (OpNode ADDRri:$addr))]
                  >;
+  //def R  : Instr2<0b000000,
+  //               (outs GPR:$a1), (ins GPR:$a2),
+  //               "LOD $a1, $a2",
+  //               [(set i32:$a1, (OpNode i32:$a2))]
+  //               >;
 }
 
 

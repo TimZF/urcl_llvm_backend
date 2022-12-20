@@ -14,6 +14,7 @@
 #include "URCLFrameLowering.h"
 #include "URCLSubtarget.h"
 #include "llvm/CodeGen/MachineFunction.h"
+#include "URCLMachineFunctionInfo.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/RegisterScavenging.h"
 #include "llvm/Support/Debug.h"
@@ -96,4 +97,50 @@ void URCLFrameLowering::determineCalleeSaves(MachineFunction &MF,
                                               BitVector &SavedRegs,
                                               RegScavenger *RS) const {
   TargetFrameLowering::determineCalleeSaves(MF, SavedRegs, RS);
+}
+
+
+
+StackOffset
+URCLFrameLowering::getFrameIndexReference(const MachineFunction &MF, int FI,
+                                           Register &FrameReg) const {
+  const URCLSubtarget &Subtarget = MF.getSubtarget<URCLSubtarget>();
+  const MachineFrameInfo &MFI = MF.getFrameInfo();
+  const URCLRegisterInfo *RegInfo = Subtarget.getRegisterInfo();
+  const URCLMachineFunctionInfo *FuncInfo = MF.getInfo<URCLMachineFunctionInfo>();
+  bool isFixed = MFI.isFixedObjectIndex(FI);
+
+  // Addressable stack objects are accessed using neg. offsets from
+  // %fp, or positive offsets from %sp.
+  bool UseFP;
+
+  // URCL uses FP-based references in general, even when "hasFP" is
+  // false. That function is rather a misnomer, because %fp is
+  // actually always available, unless isLeafProc.
+  if (FuncInfo->isLeafProc()) {
+    // If there's a leaf proc, all offsets need to be %sp-based,
+    // because we haven't caused %fp to actually point to our frame.
+    UseFP = false;
+  } else if (isFixed) {
+    // Otherwise, argument access should always use %fp.
+    UseFP = true;
+  } else if (RegInfo->hasStackRealignment(MF)) {
+    // If there is dynamic stack realignment, all local object
+    // references need to be via %sp, to take account of the
+    // re-alignment.
+    UseFP = false;
+  } else {
+    // Finally, default to using %fp.
+    UseFP = true;
+  }
+
+  int64_t FrameOffset = MF.getFrameInfo().getObjectOffset(FI);
+
+  if (UseFP) {
+    FrameReg = RegInfo->getFrameRegister(MF);
+    return StackOffset::getFixed(FrameOffset);
+  } else {
+    FrameReg = URCL::R1; // %sp
+    return StackOffset::getFixed(FrameOffset + MF.getFrameInfo().getStackSize());
+  }
 }

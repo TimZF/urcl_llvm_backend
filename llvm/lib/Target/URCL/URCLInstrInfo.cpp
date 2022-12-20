@@ -14,7 +14,7 @@
 #include "URCLInstrInfo.h"
 
 #include "URCLTargetMachine.h"
-#include "URCLMachineFunction.h"
+#include "URCLMachineFunctionInfo.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"

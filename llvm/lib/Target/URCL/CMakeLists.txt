@@ -22,6 +22,7 @@ add_llvm_target(URCLCodeGen
   URCLRegisterInfo.cpp
   URCLSubtarget.cpp
   URCLTargetObjectFile.cpp
+  URCLMachineFunctionInfo.cpp
   URCLISelDAGToDAG.cpp
   URCLTargetMachine.cpp
   URCLMCInstLower.cpp

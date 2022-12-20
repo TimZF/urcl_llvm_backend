@@ -13,7 +13,7 @@
 
 #include "URCL.h"
 #include "URCLSubtarget.h"
-#include "URCLMachineFunction.h"
+#include "URCLMachineFunctionInfo.h"
 #include "URCLRegisterInfo.h"
 #include "URCLTargetMachine.h"
 #include "llvm/IR/Attributes.h"

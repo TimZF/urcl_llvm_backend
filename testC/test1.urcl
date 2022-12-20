@@ -1,0 +1,51 @@
+	.text
+BITS == 32
+MINHEAP 128
+MINSTACK 128
+MOV R1, SP
+CAL .main
+HLT
+	.globl	_Z6myFuncii
+._Z6myFuncii
+	SUB R1, R1, 8
+	MOV R4, R3
+	MOV R5, R2
+	LSTR R1, -4, R5
+	LSTR R1, -8, R4
+	LLOD R4, R1, -4
+	LLOD R5, R1, -8
+	ADD R4, R4, R5
+	MOV R2, R4
+	ADD R1, R1, 8
+	RET
+
+	.globl	main
+.main
+	SUB R1, R1, 16
+	LSTR R1, -4, R6
+	IMM R4, 0
+	LSTR R1, -8, R4
+	IMM R6, 4
+	LLOD R5, .L__const.main.a, R6
+	add R4, R1, -16
+	LSTR R4, R6, R5
+	LLOD R5, .L__const.main.a, 0
+	LSTR R1, -16, R5
+	LLOD R5, R1, -16
+	LLOD R4, R4, R6
+	MOV R2, R5
+	MOV R3, R4
+	CAL _Z6myFuncii
+	MOV R4, R2
+	MOV R2, R4
+	LLOD R6, R1, -4
+	ADD R1, R1, 16
+	RET
+
+	.section	.rodata.cst8,"aM",@progbits,8
+	.p2align	2, 0x0
+.L__const.main.a
+	dw	32
+	dw	64
+
+	.section	".note.GNU-stack","",@progbits

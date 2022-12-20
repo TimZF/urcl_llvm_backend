@@ -20,9 +20,8 @@ using namespace llvm;
 void URCLMCAsmInfo::anchor() { }
 
 URCLMCAsmInfo::URCLMCAsmInfo(const Triple &TheTriple) {
-  // This architecture is little endian only
+
   IsLittleEndian = false;
-  AlignmentIsInBytes          = false;//TODO not sure
   HasFunctionAlignment        = false;
   HasDotTypeDotSizeDirective  = false;
   HasIdentDirective           = false;
@@ -31,9 +30,10 @@ URCLMCAsmInfo::URCLMCAsmInfo(const Triple &TheTriple) {
   HasSingleParameterDotFile   = false;
   HasFourStringsDotFile       = false;
 
-  Data16bitsDirective         = "\t.dw\t";
-  Data32bitsDirective         = "\t.dw\t";
-  Data64bitsDirective         = "\t.qw\t";
+  Data8bitsDirective          = nullptr;
+  Data16bitsDirective         = nullptr;
+  Data32bitsDirective         = "\tdw\t";
+  Data64bitsDirective         = "\tqw\t";
 
   PrivateGlobalPrefix         = ".G";
   PrivateLabelPrefix          = ".L";

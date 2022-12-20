@@ -84,8 +84,8 @@ private:
                         LLVMContext &Context) const override;
 
   // LowerGlobalAddress - Emit a constant load to the global address.
-  SDValue LowerTruncateStore(SDValue Op, SelectionDAG &DAG) const;
-  SDValue LowerAnyExtLoad(SDValue Op, SelectionDAG &DAG) const;
+  //SDValue LowerTruncateStore(SDValue Op, SelectionDAG &DAG) const;
+  //SDValue LowerAnyExtLoad(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerGlobalAddress(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerFRAMEADDR(SDValue Op, SelectionDAG &DAG) const;
   SDValue LowerBR_CC(SDValue Op, SelectionDAG &DAG) const;

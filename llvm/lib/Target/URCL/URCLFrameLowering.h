@@ -43,6 +43,7 @@ public:
   void determineCalleeSaves(MachineFunction &MF, BitVector &SavedRegs,
                             RegScavenger *RS) const override;
 
+  StackOffset getFrameIndexReference(const MachineFunction &MF, int FI, Register &FrameReg) const override;
   bool hasFP(const MachineFunction &MF) const override;
 };
 } // end llvm namespace

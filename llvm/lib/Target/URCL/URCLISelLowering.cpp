@@ -13,7 +13,7 @@
 
 #include "URCLISelLowering.h"
 #include "URCL.h"
-#include "URCLMachineFunction.h"
+#include "URCLMachineFunctionInfo.h"
 #include "URCLSubtarget.h"
 #include "URCLTargetMachine.h"
 #include "llvm/CodeGen/CallingConvLower.h"
@@ -250,20 +250,23 @@ SDValue URCLTargetLowering::LowerGlobalAddress(SDValue addr, SelectionDAG& DAG) 
   SDLoc DL(addr);
   EVT VT = getPointerTy(DAG.getDataLayout());
 
-  //const Module *M = DAG.getMachineFunction().getFunction().getParent();
-  //PICLevel::Level picLevel = M->getPICLevel();
-
   const GlobalAddressSDNode *GA = dyn_cast<GlobalAddressSDNode>(addr);
-  SDValue idx = DAG.getTargetGlobalAddress(GA->getGlobal(),
-                                      SDLoc(GA),
+  SDValue global_addr = DAG.getTargetGlobalAddress(GA->getGlobal(),
+                                      DL,
                                       GA->getValueType(0),
-                                      GA->getOffset());
-  SDValue GlobalBase = DAG.getRegister(URCL::R0, VT);//DAG.getNode(SPISD::GLOBAL_BASE_REG, DL, VT);
-  SDValue AbsAddr = DAG.getNode(ISD::ADD, DL, VT, GlobalBase, idx);
+                                      0);
+  //SDValue offset = DAG.getConstant(GA->getOffset(), DL, VT);
+  //SDValue GlobalBase = DAG.getRegister(URCL::R0, VT);//DAG.getNode(SPISD::GLOBAL_BASE_REG, DL, VT);
+  //SDValue AbsAddr = DAG.getNode(ISD::ADD, DL, VT, GlobalBase, global_addr);
 
   //MachineFrameInfo &MFI = DAG.getMachineFunction().getFrameInfo();
-  return DAG.getLoad(VT, DL, DAG.getEntryNode(), AbsAddr,
-                     MachinePointerInfo::getGOT(DAG.getMachineFunction()));
+  //return DAG.getLoad(VT, DL, DAG.getEntryNode(), AbsAddr, MachinePointerInfo::getGOT(DAG.getMachineFunction()));
+
+
+  SDValue chain = DAG.getEntryNode();
+  SDValue Ptr = DAG.getNode(ISD::ADD, DL, VT, global_addr, DAG.getIntPtrConstant(GA->getOffset(), DL));
+  //SDValue val = DAG.getLoad(VT, DL, chain, Ptr, MachinePointerInfo());
+  return Ptr;
 }
 
 //===----------------------------------------------------------------------===//
@@ -618,7 +621,7 @@ SDValue URCLTargetLowering::LowerFormalArguments(SDValue Chain, CallingConv::ID 
 
   if (MF.getFunction().hasStructRetAttr()) {
     // Copy the SRet Argument to SRetReturnReg.
-    URCLFunctionInfo *SFI = MF.getInfo<URCLFunctionInfo>();
+    URCLMachineFunctionInfo *SFI = MF.getInfo<URCLMachineFunctionInfo>();
     Register Reg = SFI->getSRetReturnReg();
     if (!Reg) {
       Reg = MF.getRegInfo().createVirtualRegister(&URCL::GPRRegClass);
@@ -795,7 +798,7 @@ URCLTargetLowering::expandSelectCC(MachineInstr &MI, MachineBasicBlock *BB,
     .addMBB(SinkMBB)
     .add(lhs)
     .add(rhs);
-  LLVM_DEBUG(dbgs() << "HERE");
+  //LLVM_DEBUG(dbgs() << "HERE");
 
   // IfFalseMBB just falls through to SinkMBB.
   IfFalseMBB->addSuccessor(SinkMBB);
